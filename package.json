@@ -1,0 +1,28 @@
+{
+  "name": "alejandrodecora",
+  "version": "1.0.0",
+  "author": "Alejandro Varela de Cora",
+  "prettier": {
+    "semi": false,
+    "singleQuote": false,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "printWidth": 120,
+          "tabWidth": 4
+        }
+      }
+    ]
+  },
+  "main": "index.html",
+  "scripts": {
+    "dev": "live-server --entry-file=index.html ."
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.25.5",
+    "live-server": "^1.2.2",
+    "pettier": "^1.1.0"
+  }
+}
