@@ -9,99 +9,12 @@
 
         <link rel="icon" type="image/svg" href="/icons/mirror.svg" />
 
-        <style>
-            @import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-
-            :root {
-                --color-background: antiquewhite;
-                --color: black;
-                --selection-background: burlywood;
-            }
-
-            :root {
-                --padding: 5rem;
-            }
-
-            body.dark-mode {
-                --color-background: #131320;
-                --color: #e0e0e0;
-                --selection-background: mediumpurple;
-            }
-
-            ::selection {
-                background-color: var(--selection-background);
-            }
-
-            html {
-                font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-                box-sizing: border-box;
-            }
-
-            body {
-                font-family: Merriweather, serif;
-                font-size: 1.25rem;
-                font-weight: 300;
-                line-height: 1.75;
-                height: 100vh;
-                width: 100vw;
-                margin: 0;
-            }
-
-            main {
-                background-color: var(--color-background);
-                color: var(--color);
-                height: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 0 var(--padding);
-            }
-
-            main section h1 {
-                margin: 0;
-            }
-
-            main section p {
-                hyphens: auto;
-            }
-
-            img {
-                width: clamp(10rem, 10vw, max(10vw, 10rem));
-                border-radius: 50%;
-            }
-        </style>
-        <script type="module">
-            async function loadLanguage(lang) {
-                const request = await fetch(`lang/${lang}.json`)
-                const content = await request.json()
-                console.log(content)
-
-                for (const [key, value] of Object.entries(content)) {
-                    let element = document.querySelector(`[data-i18n="${key}"]`)
-                    element.textContent = value
-                }
-            }
-
-            const selector = document.querySelector("select")
-            selector.addEventListener("change", (event) => {
-                loadLanguage(event.target.value)
-            })
-
-            const themeButton = document.querySelector("nav button")
-            themeButton.addEventListener("click", () => {
-                document.body.classList.toggle("dark-mode")
-            })
-
-            console.log(location.pathname.split("/")[1])
-        </script>
+        <link rel="stylesheet" href="stylesheets/styles.css" />
+        <script type="module" src="index.js"></script>
     </head>
     <body>
         <nav>
-            <select>
-                <option value="en">English</option>
-                <option value="es">Español</option>
-                <option value="gl" selected>Galego</option>
-            </select>
+            <x-select></x-select>
             <button>Theme</button>
         </nav>
         <main>
@@ -118,5 +31,129 @@
                 <img src="images/eu.webp" alt="Alejandro Varela de Cora" />
             </figure>
         </main>
+        <footer>
+            <a href="https://bsky.app/profile/vichel0creg0.bsky.social">
+                Hecho con 💜 por
+                <!-- prettier-ignore -->
+                <svg viewBox="0 0 600 530" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="m135.72 44.03c66.496 49.921 138.02 151.14 164.28 205.46 26.262-54.316 97.782-155.54 164.28-205.46 47.98-36.021 125.72-63.892 125.72 24.795 0 17.712-10.155 148.79-16.111 170.07-20.703 73.984-96.144 92.854-163.25 81.433 117.3 19.964 147.14 86.092 82.697 152.22-122.39 125.59-175.91-31.511-189.63-71.766-2.514-7.3797-3.6904-10.832-3.7077-7.8964-0.0174-2.9357-1.1937 0.51669-3.7077 7.8964-13.714 40.255-67.233 197.36-189.63 71.766-64.444-66.128-34.605-132.26 82.697-152.22-67.108 11.421-142.55-7.4491-163.25-81.433-5.9562-21.282-16.111-152.36-16.111-170.07 0-88.687 77.742-60.816 125.72-24.795z" fill="#1185fe"/></svg>
+                <code>@vichelocrego</code>
+            </a>
+        </footer>
+        <script>
+            class Select extends HTMLElement {
+                constructor() {
+                    super()
+                    this.attachShadow({ mode: "open" })
+                    const styles = `
+                      select,
+                      ::picker(select) {
+                        appearance: base-select;
+                        background: var(--color-background);
+                      }
+
+                      select {
+                        border: 2px solid #ddd;
+                        background: #eee;
+                        padding: 10px;
+                        transition: 0.4s;
+                      }
+
+                      select:hover,
+                      select:focus {
+                        background: #ddd;
+                      }
+
+                      select::picker-icon {
+                        color: #999;
+                        transition: 0.4s rotate;
+                      }
+
+                      select:open::picker-icon {
+                        rotate: 180deg;
+                      }
+
+                      ::picker(select) {
+                        border: none;
+                      }
+
+                      option {
+                        display: flex;
+                        justify-content: flex-start;
+                        gap: 5px;
+
+                        border: 2px solid #ddd;
+                        background: #eee;
+                        padding: 10px;
+                        transition: 0.4s;
+                      }
+
+                      option:first-of-type {
+                        border-radius: 8px 8px 0 0;
+                      }
+
+                      option:not(:last-of-type) {
+                        border-bottom: 0;
+                      }
+
+                      option:last-of-type {
+                        border-radius: 0 0 8px 8px;
+                      }
+
+                      option:hover,
+                      option:focus {
+                        background: var(--selection-background);
+                      }
+
+                      option:checked {
+                        font-weight: bold;
+                      }
+
+                      option::checkmark {
+                        order: 1;
+                        margin-left: auto;
+                        content: "🗣️";
+                      }
+
+                      ::picker(select) {
+                        opacity: 0;
+                        transition: all 0.4s allow-discrete;
+                      }
+
+                      ::picker(select):popover-open {
+                        opacity: 1;
+                      }
+
+                      @starting-style {
+                        ::picker(select):popover-open {
+                          opacity: 0;
+                        }
+                      }
+
+                      ::picker(select) {
+                        top: calc(anchor(bottom) + 1px);
+                        left: anchor(-5%);
+                      }
+                    `
+                    const stylesheet = new CSSStyleSheet()
+                    stylesheet.replace(styles)
+                    this.shadowRoot.adoptedStyleSheets = [...document.adoptedStyleSheets, stylesheet]
+                }
+
+                connectedCallback() {
+                    this.shadowRoot.innerHTML = `
+                      <select id="language-select">
+                          <button>
+                             <selectedcontent></selectedcontent>
+                          </button>
+                          <option value="en">English</option>
+                          <option value="es">Español</option>
+                          <option value="gl" selected>Galego</option>
+                      </select>
+                    `
+                }
+            }
+
+            window.customElements.define("x-select", Select)
+        </script>
     </body>
 </html>
