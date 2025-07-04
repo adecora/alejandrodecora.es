@@ -13,9 +13,98 @@
         <script type="module" src="index.js"></script>
     </head>
     <body>
+        <style>
+            select,
+            ::picker(select) {
+                appearance: base-select;
+                background: transparent;
+                cursor: pointer;
+            }
+
+            select {
+                border: 0px solid #ddd;
+                background: transparent;
+                color: var(--color);
+                padding: var(--x-pad);
+                transition: 0.4s;
+            }
+
+            select:hover,
+            select:focus {
+                background: var(--selection-background);
+            }
+
+            select::picker-icon {
+                position: relative;
+                top: -5px;
+                font-weight: bold;
+                content: "⌵";
+                color: var(--color);
+                transition: 0.4s rotate;
+            }
+
+            select:open::picker-icon {
+                top: 5px;
+                rotate: 180deg;
+            }
+
+            ::picker(select) {
+                border: none;
+            }
+
+            selectedcontent {
+                text-transform: uppercase;
+                font-weight: bold;
+            }
+
+            option {
+                display: flex;
+                justify-content: flex-start;
+                gap: 5px;
+                color: var(--color);
+                background: transparent;
+                padding: 10px;
+                transition: 0.4s;
+            }
+
+            option:hover,
+            option:focus {
+                background: var(--selection-background);
+            }
+
+            option:checked {
+                font-weight: bold;
+            }
+
+            option::checkmark {
+                order: 1;
+                margin-left: auto;
+                content: "🗣️";
+            }
+
+            ::picker(select) {
+                opacity: 0;
+                transition: all 0.4s allow-discrete;
+            }
+
+            ::picker(select):popover-open {
+                opacity: 1;
+            }
+
+            @starting-style {
+                ::picker(select):popover-open {
+                    opacity: 0;
+                }
+            }
+
+            ::picker(select) {
+                top: calc(anchor(bottom) + 1px);
+                right: anchor(110%);
+            }
+        </style>
         <nav>
             <x-select></x-select>
-            <button>Theme</button>
+            <!-- <x-theme></x-theme> -->
         </nav>
         <main>
             <section>
@@ -39,121 +128,5 @@
                 <code>@vichelocrego</code>
             </a>
         </footer>
-        <script>
-            class Select extends HTMLElement {
-                constructor() {
-                    super()
-                    this.attachShadow({ mode: "open" })
-                    const styles = `
-                      select,
-                      ::picker(select) {
-                        appearance: base-select;
-                        background: var(--color-background);
-                      }
-
-                      select {
-                        border: 2px solid #ddd;
-                        background: #eee;
-                        padding: 10px;
-                        transition: 0.4s;
-                      }
-
-                      select:hover,
-                      select:focus {
-                        background: #ddd;
-                      }
-
-                      select::picker-icon {
-                        color: #999;
-                        transition: 0.4s rotate;
-                      }
-
-                      select:open::picker-icon {
-                        rotate: 180deg;
-                      }
-
-                      ::picker(select) {
-                        border: none;
-                      }
-
-                      option {
-                        display: flex;
-                        justify-content: flex-start;
-                        gap: 5px;
-
-                        border: 2px solid #ddd;
-                        background: #eee;
-                        padding: 10px;
-                        transition: 0.4s;
-                      }
-
-                      option:first-of-type {
-                        border-radius: 8px 8px 0 0;
-                      }
-
-                      option:not(:last-of-type) {
-                        border-bottom: 0;
-                      }
-
-                      option:last-of-type {
-                        border-radius: 0 0 8px 8px;
-                      }
-
-                      option:hover,
-                      option:focus {
-                        background: var(--selection-background);
-                      }
-
-                      option:checked {
-                        font-weight: bold;
-                      }
-
-                      option::checkmark {
-                        order: 1;
-                        margin-left: auto;
-                        content: "🗣️";
-                      }
-
-                      ::picker(select) {
-                        opacity: 0;
-                        transition: all 0.4s allow-discrete;
-                      }
-
-                      ::picker(select):popover-open {
-                        opacity: 1;
-                      }
-
-                      @starting-style {
-                        ::picker(select):popover-open {
-                          opacity: 0;
-                        }
-                      }
-
-                      ::picker(select) {
-                        top: calc(anchor(bottom) + 1px);
-                        left: anchor(-5%);
-                      }
-                    `
-                    const stylesheet = new CSSStyleSheet()
-                    stylesheet.replace(styles)
-                    this.shadowRoot.adoptedStyleSheets = [...document.adoptedStyleSheets, stylesheet]
-                }
-
-                connectedCallback() {
-                    this.shadowRoot.innerHTML = `
-                      <select id="language-select">
-                          <button>
-                             <selectedcontent></selectedcontent>
-                          </button>
-                          <option value="en">English</option>
-                          <option value="es">Español</option>
-                          <option value="gl" selected>Galego</option>
-                      </select>
-                    `
-                }
-            }
-
-            window.customElements.define("x-select", Select)
-        </script>
     </body>
 </html>

@@ -15,6 +15,7 @@
       }
     ]
   },
+  "type": "module",
   "main": "index.html",
   "scripts": {
     "dev": "live-server --entry-file=index.html ."
