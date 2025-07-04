@@ -18,9 +18,10 @@
   "type": "module",
   "main": "index.html",
   "scripts": {
-    "dev": "live-server --entry-file=index.html ."
+    "build": "bin/build.sh",
+    "dev": "live-server --entry-file=httpdocs/index.html httpdocs"
   },
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "esbuild": "^0.25.5",
     "live-server": "^1.2.2",

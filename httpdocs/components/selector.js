@@ -3,6 +3,8 @@ const LANGUAGES = {
   es: "Español",
   en: "English",
 }
+// Lenguaje por defecto, tiene que estar alineado con el que aparece en el `index.html`
+const DEFAULT_LANG = "gl"
 
 function getLanguage() {
   const path = location.pathname.split("/")[1]
@@ -18,6 +20,7 @@ async function loadLanguage(lang) {
     let element = document.querySelector(`[data-i18n="${key}"]`)
     element.style.opacity = 0
 
+    // Este *timeout* tiene que durar lo mismo que la transición en `body main section p`
     setTimeout(() => {
       element.textContent = value
       element.style.opacity = 1
@@ -121,6 +124,13 @@ class Select extends HTMLElement {
         top: calc(anchor(bottom) + 1px);
         right: anchor(110%);
       }
+
+      @media (max-width: 1024px) {
+        ::picker(select) {
+          top: calc(anchor(bottom) + 1px);
+          left: anchor(0%);
+        }
+      }
     `
     const stylesheet = new CSSStyleSheet()
     stylesheet.replace(styles)
@@ -130,17 +140,16 @@ class Select extends HTMLElement {
     ]
   }
 
-  languages = LANGUAGES
   select
   selectedContent
 
   connectedCallback() {
     this.shadowRoot.innerHTML = `
-      <select id="language-select">
+      <select id="language-select" aria-label="Set language">
           <button>
               <selectedcontent></selectedcontent>
           </button>
-          ${Object.entries(this.languages)
+          ${Object.entries(LANGUAGES)
             .map(([lang, value]) => `<option value=${lang}>${value}</option>`)
             .join(" ")}
       </select>
@@ -148,10 +157,11 @@ class Select extends HTMLElement {
     this.select = this.shadowRoot.querySelector("#language-select")
     this.selectedContent = this.shadowRoot.querySelector("selectedcontent")
 
-    const language = getLanguage() || "gl"
-
-    this.select.value = language
-    this.lang = language
+    const language = getLanguage() || DEFAULT_LANG
+    if (language !== DEFAULT_LANG) {
+      this.select.value = language
+      this.lang = language
+    }
 
     this.selectedContent &&
       (this.selectedContent.textContent = this.select.value)
@@ -172,8 +182,8 @@ class Select extends HTMLElement {
     document.documentElement.lang = value
 
     const path = location.pathname.split("/").filter(Boolean)
-    if (Object.keys(this.languages).includes(path[0])) path.shift()
-    if (value != "gl") path.unshift(value)
+    if (Object.keys(LANGUAGES).includes(path[0])) path.shift()
+    if (value != DEFAULT_LANG) path.unshift(value)
     history.pushState({}, "", "/" + path.join("/"))
 
     loadLanguage(value)

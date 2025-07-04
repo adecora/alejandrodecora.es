@@ -54,7 +54,7 @@ class Theme extends HTMLElement {
 
   connectedCallback() {
     this.shadowRoot.innerHTML = `
-      <input type="checkbox" name="theme" id="theme" />
+      <input type="checkbox" name="theme" id="theme" aria-label="Set theme" />
     `
     this.input = this.shadowRoot.querySelector('input[type="checkbox"]')
 
