@@ -17,18 +17,19 @@ const credentials = {
   client_x509_cert_url: process.env.GOOGLE_CLIENT_X509_CERT_URL,
   universe_domain: process.env.GOOGLE_UNIVERSE_DOMAIN,
 }
+console.log(credentials)
 const { SPREADSHEET_ID, SHEET_NAME } = process.env
 
 const auth = new google.auth.GoogleAuth({
   credentials,
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 })
-
+console.log(auth)
 const sheets = google.sheets({ version: "v4", auth })
-
+console.log(sheets)
 export const handler = async (event) => {
   const logData = JSON.parse(event.body)
-
+  console.log(logData)
   const request = {
     spreadsheetId: SPREADSHEET_ID,
     range: `${SHEET_NAME}!A:I`, // Rango donde insertar (ajusta según columnas)
@@ -53,6 +54,7 @@ function onSuccess(res) {
 }
 
 function onError(error) {
+  console.log(error)
   return {
     statusCode: 422,
     body: JSON.stringify(error),
