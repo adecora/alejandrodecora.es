@@ -14,7 +14,6 @@ function getLanguage() {
 async function loadLanguage(lang) {
   const request = await fetch(`lang/${lang}.json`)
   const content = await request.json()
-  console.log(content)
 
   for (const [key, value] of Object.entries(content)) {
     let element = document.querySelector(`[data-i18n="${key}"]`)
@@ -184,8 +183,9 @@ class Select extends HTMLElement {
     const path = location.pathname.split("/").filter(Boolean)
     if (Object.keys(LANGUAGES).includes(path[0])) path.shift()
     if (value != DEFAULT_LANG) path.unshift(value)
-    history.pushState({}, "", "/" + path.join("/"))
+    const search = location.search
 
+    history.pushState({}, "", "/" + path.join("/") + search)
     loadLanguage(value)
   }
 

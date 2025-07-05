@@ -1,7 +1,19 @@
 {
   "name": "alejandrodecora",
   "version": "1.0.0",
+  "license": "AGPL-3.0-or-later",
   "author": "Alejandro Varela de Cora",
+  "type": "module",
+  "homepage": "https://alejandrodecora.es/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adecora/alejandrodecora.es.git"
+  },
+  "main": "httpdocs/index.html",
+  "scripts": {
+    "build": "bin/build.sh",
+    "dev": "live-server --entry-file=httpdocs/index.html httpdocs"
+  },
   "prettier": {
     "semi": false,
     "singleQuote": false,
@@ -15,16 +27,12 @@
       }
     ]
   },
-  "type": "module",
-  "main": "index.html",
-  "scripts": {
-    "build": "bin/build.sh",
-    "dev": "live-server --entry-file=httpdocs/index.html httpdocs"
-  },
-  "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "esbuild": "^0.25.5",
     "live-server": "^1.2.2",
     "pettier": "^1.1.0"
+  },
+  "dependencies": {
+    "googleapis": "^150.0.1"
   }
 }
