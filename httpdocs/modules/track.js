@@ -34,6 +34,8 @@ export default async function () {
       Accept: "application/json",
     },
     body: JSON.stringify(Object.values(data)),
+  }).catch((error) => {
+    console.error(`No se ha podido registrar la vista: ${error}`)
   })
 
   fetch("/.netlify/functions/notify", {
@@ -42,5 +44,7 @@ export default async function () {
       Accept: "application/json",
     },
     body: JSON.stringify(data, ["timestamp", "name", "usergent", "city"], "\t"),
+  }).catch((error) => {
+    console.error(`No se ha podido notificar la vista: ${error}`)
   })
 }
