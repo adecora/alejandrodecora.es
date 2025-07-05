@@ -30,9 +30,8 @@ ${event.body}
 function onSuccess(res) {
   let statusCode
 
-  console.log(res)
-
   if (!res.ok) statusCode = res.error_code
+
   return {
     statusCode: statusCode ?? 200,
     body: JSON.stringify(res),

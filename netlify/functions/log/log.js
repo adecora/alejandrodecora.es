@@ -41,7 +41,6 @@ function onSuccess(res) {
 }
 
 function onError(error) {
-  console.lof(error)
   return {
     statusCode: 422,
     body: JSON.stringify(error),
