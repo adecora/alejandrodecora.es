@@ -30,7 +30,7 @@
   "devDependencies": {
     "esbuild": "^0.25.5",
     "live-server": "^1.2.2",
-    "pettier": "^1.1.0"
+    "prettier": "^3.6.2"
   },
   "dependencies": {
     "googleapis": "^150.0.1"

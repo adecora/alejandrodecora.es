@@ -3,7 +3,7 @@
  * de google.
  */
 import { google } from "googleapis"
-
+console.log(google)
 const credentials = {
   type: process.env.GOOGLE_TYPE,
   project_id: process.env.GOOGLE_PROJECT_ID,
@@ -47,6 +47,7 @@ export const handler = async (event) => {
 }
 
 function onSuccess(res) {
+  console.log("res", res)
   return {
     statusCode: 200,
     body: JSON.stringify(res),
@@ -54,7 +55,13 @@ function onSuccess(res) {
 }
 
 function onError(error) {
-  console.log(error)
+  console.log("error", error)
+
+  if (error.response) {
+    console.error("Response data:", error.response.data)
+    console.error("Response status:", error.response.status)
+    console.error("Response headers:", error.response.headers)
+  }
   return {
     statusCode: 422,
     body: JSON.stringify(error),
