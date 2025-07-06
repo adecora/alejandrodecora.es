@@ -43,7 +43,11 @@ export default async function () {
     headers: {
       Accept: "application/json",
     },
-    body: JSON.stringify(data, ["timestamp", "name", "usergent", "city"], "\t"),
+    body: JSON.stringify(
+      data,
+      ["timestamp", "useragent", "name", "usergent", "city"],
+      "\t",
+    ),
   }).catch((error) => {
     console.error(`No se ha podido notificar la vista: ${error}`)
   })
