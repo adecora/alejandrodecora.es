@@ -3,12 +3,12 @@
  * de google.
  */
 import { google } from "googleapis"
-console.log(google)
+
 const credentials = {
   type: process.env.GOOGLE_TYPE,
   project_id: process.env.GOOGLE_PROJECT_ID,
   private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
-  private_key: atob(process.env.GOOGLE_PRIVATE_KEY),
+  private_key: process.env.GOOGLE_PRIVATE_KEY,
   client_email: process.env.GOOGLE_CLIENT_EMAIL,
   client_id: process.env.GOOGLE_CLIENT_ID,
   auth_uri: process.env.GOOGLE_AUTH_URI,
@@ -17,26 +17,25 @@ const credentials = {
   client_x509_cert_url: process.env.GOOGLE_CLIENT_X509_CERT_URL,
   universe_domain: process.env.GOOGLE_UNIVERSE_DOMAIN,
 }
-console.log(credentials)
 const { SPREADSHEET_ID, SHEET_NAME } = process.env
 
 const auth = new google.auth.GoogleAuth({
   credentials,
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 })
-console.log(auth)
+
 const sheets = google.sheets({ version: "v4", auth })
-console.log(sheets)
+
 export const handler = async (event) => {
   const logData = JSON.parse(event.body)
-  console.log(logData)
+
   const request = {
     spreadsheetId: SPREADSHEET_ID,
-    range: `${SHEET_NAME}!A:I`, // Rango donde insertar (ajusta según columnas)
+    range: `${SHEET_NAME}!A:I`,
     valueInputOption: "USER_ENTERED",
     insertDataOption: "INSERT_ROWS",
     resource: {
-      values: [logData], // logData es un array, ej: [timestamp, ip, image, userAgent]
+      values: [logData],
     },
   }
 
@@ -47,7 +46,6 @@ export const handler = async (event) => {
 }
 
 function onSuccess(res) {
-  console.log("res", res)
   return {
     statusCode: 200,
     body: JSON.stringify(res),
@@ -55,13 +53,6 @@ function onSuccess(res) {
 }
 
 function onError(error) {
-  console.log("error", error)
-
-  if (error.response) {
-    console.error("Response data:", error.response.data)
-    console.error("Response status:", error.response.status)
-    console.error("Response headers:", error.response.headers)
-  }
   return {
     statusCode: 422,
     body: JSON.stringify(error),
