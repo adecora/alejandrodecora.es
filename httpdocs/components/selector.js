@@ -15,6 +15,9 @@ async function loadLanguage(lang) {
   const request = await fetch(`lang/${lang}.json`)
   const content = await request.json()
 
+  // Un easter-🥚
+  document.querySelector("[data-hide-i18n]").innerHTML = window.easter_egg[lang]
+
   for (const [key, value] of Object.entries(content)) {
     let element = document.querySelector(`[data-i18n="${key}"]`)
     element.style.opacity = 0
