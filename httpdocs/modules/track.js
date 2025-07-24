@@ -1,3 +1,24 @@
+class FancyDate extends Date {
+  constructor(...args) {
+    super(...args)
+  }
+
+  toTinybird() {
+    console.log(this)
+    return this.toISOString().slice(0, 19).replace("T", " ")
+  }
+
+  toTelegram() {
+    return this.toLocaleDateString("es-ES", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+  }
+}
+
 export default async function () {
   const queryParams = new URLSearchParams(location.search)
   const name = queryParams.get("👀")
@@ -10,14 +31,9 @@ export default async function () {
 
   const theme = localStorage.getItem("theme")
 
+  const timestamp = new FancyDate()
   const data = {
-    timestamp: new Date().toLocaleDateString("es-ES", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    }),
+    timestamp: timestamp.toTinybird(),
     name: name ?? "unknown",
     language: navigator.language ?? "unknown",
     useragent: navigator.userAgent ?? "unknown",
@@ -37,6 +53,8 @@ export default async function () {
   }).catch((error) => {
     console.error(`No se ha podido registrar la vista: ${error}`)
   })
+
+  data.timestamp = timestamp.toTelegram()
 
   fetch("/.netlify/functions/notify", {
     method: "POST",
