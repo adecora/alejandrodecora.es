@@ -72,7 +72,7 @@ async function trackLoad() {
     headers: {
       Accept: "application/json",
     },
-    body: JSON.stringify({ timestamp: timestamp.toTinybird(), data }),
+    body: JSON.stringify({ timestamp: timestamp.toTinybird(), ...data }),
   }).catch((error) => {
     console.error(`No se ha podido registrar la vista: ${error}`)
   })
