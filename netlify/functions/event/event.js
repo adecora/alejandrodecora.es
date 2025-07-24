@@ -3,10 +3,10 @@
  * Tinybird.
  */
 
-const { TINYBIRD_LOG, TINYBIRD_TOKEN } = process.env
+const { TINYBIRD_EVENTS, TINYBIRD_TOKEN } = process.env
 
 export const handler = async (event) => {
-  const URL = `https://api.tinybird.co/v0/events?name=${TINYBIRD_LOG}`
+  const URL = `https://api.tinybird.co/v0/events?name=${TINYBIRD_EVENTS}`
 
   const request = {
     method: "POST",

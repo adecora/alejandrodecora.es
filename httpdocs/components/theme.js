@@ -1,3 +1,5 @@
+import { trackEvents } from "../modules/track.js"
+
 class Theme extends HTMLElement {
   constructor() {
     super()
@@ -65,6 +67,15 @@ class Theme extends HTMLElement {
     }
 
     this.input.addEventListener("change", () => {
+      let [previous_value, new_value] = ["light-theme", "dark-theme"]
+      if (!this.input.checked)
+        [previous_value, new_value] = ["dark-theme", "light-theme"]
+      trackEvents({
+        event_type: "change_theme",
+        event_data: "theme_toggle",
+        previous_value,
+        new_value,
+      })
       if (this.input.checked) {
         document.body.classList.add("dark-theme")
         localStorage.setItem("theme", "dark-theme")

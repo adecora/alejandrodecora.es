@@ -1,10 +1,11 @@
+let trackingOn = null
+
 class FancyDate extends Date {
   constructor(...args) {
     super(...args)
   }
 
   toTinybird() {
-    console.log(this)
     return this.toISOString().slice(0, 19).replace("T", " ")
   }
 
@@ -19,7 +20,7 @@ class FancyDate extends Date {
   }
 }
 
-export default async function () {
+async function trackData() {
   const queryParams = new URLSearchParams(location.search)
   const name = queryParams.get("👀")
 
@@ -33,7 +34,6 @@ export default async function () {
 
   const timestamp = new FancyDate()
   const data = {
-    timestamp: timestamp.toTinybird(),
     name: name ?? "unknown",
     language: navigator.language ?? "unknown",
     useragent: navigator.userAgent ?? "unknown",
@@ -44,12 +44,35 @@ export default async function () {
     country: country.name ?? "unknown",
   }
 
+  const msgUint8 = new TextEncoder().encode(JSON.stringify(data))
+  const hashBuffer = await window.crypto.subtle.digest("SHA-1", msgUint8)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("")
+
+  return [
+    timestamp,
+    {
+      session_id: hashHex,
+      ...data,
+    },
+  ]
+}
+
+async function getTracking() {
+  if (!trackingOn) {
+    trackingOn = trackData()
+  }
+  return trackingOn
+}
+
+async function trackLoad() {
+  const [timestamp, data] = await getTracking()
   fetch("/.netlify/functions/log", {
     method: "POST",
     headers: {
       Accept: "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({ timestamp: timestamp.toTinybird(), data }),
   }).catch((error) => {
     console.error(`No se ha podido registrar la vista: ${error}`)
   })
@@ -62,7 +85,7 @@ export default async function () {
       Accept: "application/json",
     },
     body: JSON.stringify(
-      data,
+      { timestamp: timestamp.toTelegram(), ...data },
       ["timestamp", "useragent", "name", "usergent", "city"],
       "\t",
     ),
@@ -70,3 +93,31 @@ export default async function () {
     console.error(`No se ha podido notificar la vista: ${error}`)
   })
 }
+
+async function trackEvents({
+  event_type,
+  event_data = "unknown",
+  previous_value = "unknown",
+  new_value = "unknown",
+}) {
+  const [timestamp, { session_id }] = await getTracking()
+
+  fetch("/.netlify/functions/event", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      timestamp: timestamp.toTinybird(),
+      session_id,
+      event_type,
+      event_data,
+      previous_value,
+      new_value,
+    }),
+  }).catch((error) => {
+    console.error(`No se ha podido registrar la vista: ${error}`)
+  })
+}
+
+export { trackEvents, trackLoad }

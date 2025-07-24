@@ -1,3 +1,5 @@
+import { trackEvents } from "../modules/track.js"
+
 const LANGUAGES = {
   gl: "Gallego",
   es: "Español",
@@ -180,6 +182,12 @@ class Select extends HTMLElement {
   }
 
   set lang(value) {
+    trackEvents({
+      event_type: "change_language",
+      event_data: "language_toggle",
+      previous_value: this.language ?? (getLanguage() || DEFAULT_LANG),
+      new_value: value,
+    })
     this.language = value
     document.documentElement.lang = value
 
