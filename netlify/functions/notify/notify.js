@@ -4,7 +4,7 @@
  */
 const { TELEGRAM_TOKEN, TELEGRAM_ID } = process.env
 
-export const handler = async (event) => {
+export const handler = (event) => {
   const URL = `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`
 
   const request = {
@@ -40,7 +40,7 @@ function onSuccess(res) {
 
 function onError(error) {
   return {
-    statusCode: 422,
+    statusCode: 418, // Looks like I'm a 🫖
     body: JSON.stringify(error),
   }
 }

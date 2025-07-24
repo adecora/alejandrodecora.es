@@ -33,7 +33,7 @@ export default async function () {
     headers: {
       Accept: "application/json",
     },
-    body: JSON.stringify(Object.values(data)),
+    body: JSON.stringify(data),
   }).catch((error) => {
     console.error(`No se ha podido registrar la vista: ${error}`)
   })
