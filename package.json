@@ -31,5 +31,8 @@
     "esbuild": "^0.25.5",
     "live-server": "^1.2.2",
     "prettier": "^3.6.2"
+  },
+  "dependencies": {
+    "marked": "^17.0.1"
   }
 }

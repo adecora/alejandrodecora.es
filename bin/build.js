@@ -3,7 +3,12 @@
 import { build } from "esbuild"
 
 const buildOptions = {
-  entryPoints: ["httpdocs/app.js", "httpdocs/app.css"],
+  entryPoints: [
+    "httpdocs/app.js",
+    "httpdocs/app.css",
+    "httpdocs/blog.js",
+    "httpdocs/stylesheets/blog.css",
+  ],
   minify: false,
   bundle: true,
   splitting: true,

@@ -1,0 +1,315 @@
+/* Estilos para el blog/TIL */
+
+body:has(.blog-main) {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-background);
+  color: var(--color);
+}
+
+body:has(.blog-main) footer {
+  position: relative;
+  margin-top: auto;
+  margin-bottom: 0;
+  padding: 2rem 0;
+  background-color: var(--color-background);
+}
+
+.blog-main {
+  padding-top: 10rem;
+  padding-bottom: 4rem;
+  flex: 1;
+  display: block;
+  background-color: var(--color-background);
+}
+
+.blog-header {
+  text-align: center;
+  margin-bottom: 4rem;
+
+  & h1 {
+    font-size: 3em;
+    margin-block: 0 0.5rem;
+  }
+
+  & p {
+    font-size: 1.3em;
+    color: var(--color);
+    opacity: 0.8;
+    margin: 0;
+  }
+}
+
+/* Lista de posts en grid de 2 columnas */
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--padding);
+}
+
+/* Tarjeta de post */
+.post-card {
+  background: var(--color-background);
+  border: 2px solid var(--color);
+  border-radius: 8px;
+  padding: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 8px 8px 0 var(--toggle-background);
+    border-color: var(--selection-background);
+  }
+
+  & .post-date {
+    font-size: 0.9em;
+    color: var(--selection-background);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  & .post-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  & .post-intro {
+    font-size: 1em;
+    line-height: 1.6;
+    opacity: 0.9;
+    margin: 0;
+  }
+}
+
+/* Vista de post completo */
+post-viewer .post-viewer {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-background);
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 6rem var(--padding);
+  animation: fadeIn 0.3s ease;
+}
+
+post-viewer .post-viewer.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+post-viewer .post-content {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  padding-bottom: 8rem;
+}
+
+post-viewer .post-close {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  background: var(--selection-background);
+  color: var(--color-background);
+  border: none;
+  font-size: 2em;
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  line-height: 1;
+  transition: all 0.3s;
+  z-index: 1001;
+
+  &:hover {
+    transform: rotate(90deg);
+    background: var(--color);
+    color: var(--color-background);
+  }
+}
+
+/* Estilos para contenido markdown renderizado */
+post-viewer .markdown-content {
+  font-size: 1.1em;
+  line-height: 1.8;
+
+  & h1 {
+    font-size: 2.5em;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    border-bottom: 3px solid var(--selection-background);
+    padding-bottom: 0.5rem;
+  }
+
+  & h2 {
+    font-size: 2em;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--selection-background);
+  }
+
+  & h3 {
+    font-size: 1.5em;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  & p {
+    margin-bottom: 1.5rem;
+  }
+
+  & a {
+    color: var(--selection-background);
+    text-decoration: underline;
+    font-weight: bold;
+
+    &:hover {
+      background: var(--selection-background);
+      color: var(--color-background);
+    }
+  }
+
+  & ul,
+  & ol {
+    margin-bottom: 1.5rem;
+    padding-left: 2em;
+  }
+
+  & li {
+    margin-bottom: 0.5rem;
+  }
+
+  & code {
+    background: var(--toggle-background);
+    color: var(--color-background);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+    font-family: "Courier New", Monaco, monospace;
+  }
+
+  & pre {
+    background: #2d2d2d !important;
+    padding: 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+    border: 2px solid var(--selection-background);
+  }
+
+  & pre code {
+    background: none !important;
+    padding: 0;
+    color: inherit;
+    font-family: "Courier New", Monaco, monospace;
+    font-size: 0.9em;
+    line-height: 1.5;
+  }
+
+  /* Ajustes para Prism.js */
+  & pre[class*="language-"] {
+    background: #2d2d2d !important;
+    margin: 0 0 1.5rem 0;
+  }
+
+  & code[class*="language-"] {
+    background: none !important;
+    text-shadow: none;
+  }
+
+  & blockquote {
+    border-left: 4px solid var(--selection-background);
+    padding-left: 1.5rem;
+    margin-left: 0;
+    font-style: italic;
+    opacity: 0.9;
+  }
+
+  & strong {
+    font-weight: bold;
+    color: var(--selection-background);
+  }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .posts-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .blog-header h1 {
+    font-size: 2.5em;
+  }
+
+  post-viewer .post-viewer {
+    padding: 5rem 2rem;
+  }
+
+  post-viewer .post-close {
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5em;
+  }
+}
+
+@media (max-width: 540px) {
+  .blog-main {
+    padding-top: 6rem;
+  }
+
+  .blog-header h1 {
+    font-size: 2em;
+  }
+
+  .blog-header p {
+    font-size: 1.1em;
+  }
+
+  .post-card {
+    padding: 1.5rem;
+
+    & .post-title {
+      font-size: 1.3em;
+    }
+  }
+
+  post-viewer .markdown-content {
+    font-size: 1em;
+
+    & h1 {
+      font-size: 2em;
+    }
+
+    & h2 {
+      font-size: 1.6em;
+    }
+
+    & h3 {
+      font-size: 1.3em;
+    }
+  }
+}
