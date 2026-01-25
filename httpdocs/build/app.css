@@ -85,6 +85,7 @@
   --color-background: antiquewhite;
   --toggle-background: #131320;
   --color: black;
+  --selection-background: chocolate;
   --padding: 5rem;
   --x-pad: 0.4em;
   --font-serif: "Merriweather", serif;
@@ -95,6 +96,36 @@ body.dark-theme {
   --toggle-background: antiquewhite;
   --color: #e0e0e0;
   --selection-background: mediumpurple;
+}
+@keyframes waiting {
+  0% {
+    bottom: 50px;
+    transform: scale(1);
+  }
+  20% {
+    bottom: 40px;
+    transform: scaleY(0.95) scaleX(1.05);
+  }
+  48% {
+    transform: scaleY(1.1) scaleX(0.9);
+  }
+  60% {
+    bottom: 150px;
+  }
+  68% {
+    transform: scaleY(0.98) scaleX(1.02);
+  }
+  80% {
+    bottom: 50px;
+    transform: scaleY(1.02) scaleX(0.98);
+  }
+  90% {
+    bottom: 70px;
+  }
+  100% {
+    bottom: 50px;
+    transform: scale(1);
+  }
 }
 ::selection {
   background-color: var(--selection-background);
@@ -116,10 +147,25 @@ body {
   & nav {
     position: fixed;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 2em;
-    width: calc(100% - 2em);
-    padding: 2em 2em 0 0;
+    width: calc(100% - 4em);
+    padding: 2em 2em 0 2em;
+    z-index: 100;
+    & .til-link {
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: var(--x-pad);
+      transition: background 0.4s;
+      border-radius: 4px;
+    }
+    & .til-link:hover {
+      background: var(--selection-background);
+    }
+    & > div {
+      display: flex;
+      gap: 2em;
+    }
   }
   & main {
     background-color: var(--color-background);
@@ -131,6 +177,7 @@ body {
     padding: 0 var(--padding);
     transition: background 0.4s;
     & section {
+      max-width: 60%;
       & h1 {
         font-size: 3em;
         margin-block: 0;
@@ -139,6 +186,18 @@ body {
         font-size: 1.5em;
         hyphens: auto;
         transition: opacity 0.4s;
+      }
+      & p:last-child {
+        display: none;
+        & a {
+          outline: dashed var(--selection-background);
+        }
+        & img {
+          position: fixed;
+          bottom: 50px;
+          left: 50px;
+          animation: waiting 3s ease-out infinite;
+        }
       }
     }
     & img {
@@ -172,6 +231,11 @@ body {
     color: var(--color);
     & nav {
       position: relative;
+      width: 100%;
+      padding: 2em 2em 0 2em;
+      & > div {
+        gap: 1em;
+      }
     }
     & main {
       flex-direction: column;
@@ -179,6 +243,7 @@ body {
       gap: 4rem;
       background: transparent;
       & section {
+        max-width: 100%;
         & h1 {
           text-align: center;
           text-decoration: underline;
