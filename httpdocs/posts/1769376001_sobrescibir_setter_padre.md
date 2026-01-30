@@ -1,7 +1,7 @@
 ---
 title: "Sobrescribir el setter de una @property de una clase padre en Python"
 date: "2025-09-01"
-intro: "Cómo sobrescribir el *setter* de una `@property` de una clase padre sin dejar de invocar la implementación original."
+intro: "¿Cómo sobrescribir el setter de una @property de una clase padre sin dejar de invocar la implementación original?."
 slug: "python-inheritance-setter"
 ---
 

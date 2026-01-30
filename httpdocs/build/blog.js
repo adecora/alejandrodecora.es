@@ -1318,6 +1318,12 @@ var PostViewer = class extends HTMLElement {
     });
     const html = d.parse(post.content);
     content.innerHTML = html;
+    const images = content.querySelectorAll('img[src^="./"]');
+    images.forEach((img) => {
+      const oldSrc = img.getAttribute("src");
+      const newSrc = "/posts/" + oldSrc.substring(2);
+      img.setAttribute("src", newSrc);
+    });
     if (window.Prism) {
       window.Prism.highlightAllUnder(content);
     }

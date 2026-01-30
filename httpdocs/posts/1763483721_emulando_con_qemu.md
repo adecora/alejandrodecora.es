@@ -1,7 +1,7 @@
 ---
 title: "TIL: Emulando una CPU RISC-V bare-metal con QEMU y GDB"
 date: "2026-01-13"
-intro: "JavaScript es single-threaded, pero puede manejar operaciones asíncronas. El Event Loop es la magia detrás de esto. Entiéndelo y comprenderás JavaScript."
+intro: "Explorando el proceso de compilar, ejecutar y depurar un programa mínimo bare-metal para una CPU RISC-V."
 slug: "riscv-bare-metal"
 ---
 

@@ -100,6 +100,14 @@ class PostViewer extends HTMLElement {
     const html = marked.parse(post.content)
     content.innerHTML = html
 
+    // Corregir rutas de imágenes relativas para que apunten a /posts/
+    const images = content.querySelectorAll('img[src^="./"]')
+    images.forEach((img) => {
+      const oldSrc = img.getAttribute("src")
+      const newSrc = "/posts/" + oldSrc.substring(2) // Quita "./" y añade "/posts/"
+      img.setAttribute("src", newSrc)
+    })
+
     // Aplicar syntax highlighting con Prism
     if (window.Prism) {
       window.Prism.highlightAllUnder(content)
