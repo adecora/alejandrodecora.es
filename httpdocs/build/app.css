@@ -152,14 +152,18 @@ body {
     width: calc(100% - 4em);
     padding: 2em 2em 0 2em;
     z-index: 100;
-    & .til-link {
+    & .nav-left {
+      display: flex;
+      gap: 1em;
+    }
+    & .nav-button {
       font-weight: bold;
       text-transform: uppercase;
       padding: var(--x-pad);
       transition: background 0.4s;
       border-radius: 4px;
     }
-    & .til-link:hover {
+    & .nav-button:hover {
       background: var(--selection-background);
     }
     & > div {
@@ -233,6 +237,10 @@ body {
       position: relative;
       width: 100%;
       padding: 2em 2em 0 2em;
+      & .nav-left {
+        flex-direction: column;
+        gap: 0.5em;
+      }
       & > div {
         gap: 1em;
       }
