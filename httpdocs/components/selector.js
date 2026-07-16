@@ -199,10 +199,6 @@ class Select extends HTMLElement {
     history.pushState({}, "", "/" + path.join("/") + search)
     loadLanguage(value)
   }
-
-  disconnectedCallback() {
-    this.select.removeEventListener("change")
-  }
 }
 
 export { Select }

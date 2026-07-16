@@ -11,6 +11,16 @@ window.addEventListener("devtoolsOpened", ({ detail: { orientation } }) => {
     event_data: `${orientation} easter egg journey`,
   })
 })
+document.getElementById("cv").addEventListener("click", () => {
+  const queryParams = new URLSearchParams(location.search)
+  const name = queryParams.get("👀") || "unknown"
+
+  trackEvents({
+    event_type: "open_cv",
+    event_data: `CV opened from ${location.pathname}`,
+    new_value: `${name}`,
+  })
+})
 
 customElements.define("x-select", Select)
 customElements.define("x-theme", Theme)

@@ -157,6 +157,24 @@ body {
       box-shadow: 20px 5px 50px var(--toggle-background);
       border-radius: 50%;
     }
+
+    & header {
+      & p:last-child {
+        display: none;
+
+        & a {
+          outline: dashed var(--selection-background);
+        }
+
+        & img {
+          position: fixed;
+          bottom: 50px;
+          left: 50px;
+
+          animation: waiting 3s ease-out infinite;
+        }
+      }
+    }
   }
 
   & footer {

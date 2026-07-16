@@ -1,4 +1,5 @@
 import { marked } from "marked"
+import { trackEvents } from "../modules/track.js"
 
 class PostViewer extends HTMLElement {
   constructor() {
@@ -10,19 +11,24 @@ class PostViewer extends HTMLElement {
     this.render()
     this.setupEventListeners()
 
-    // Escuchar evento de post seleccionado
-    document.addEventListener("post-selected", (e) => {
+    // Guardar referencias para poder eliminar los listeners
+    this.handlePostSelected = (e) => {
       this.showPost(e.detail)
-    })
+    }
 
-    // Manejar navegación con historial del navegador
-    window.addEventListener("popstate", (e) => {
+    this.handlePopState = (e) => {
       if (e.state && e.state.post) {
         this.showPost(e.state.post, false)
       } else {
         this.hide()
       }
-    })
+    }
+
+    // Escuchar evento de post seleccionado
+    document.addEventListener("post-selected", this.handlePostSelected)
+
+    // Manejar navegación con historial del navegador
+    window.addEventListener("popstate", this.handlePopState)
 
     // Verificar si hay un post en la URL al cargar
     this.checkUrlForPost()
@@ -60,14 +66,8 @@ class PostViewer extends HTMLElement {
     const closeBtn = this.querySelector(".post-close")
     const viewer = this.querySelector(".post-viewer")
 
+    // Listeners locales - no necesitan limpieza
     closeBtn.addEventListener("click", () => this.hide())
-
-    // Cerrar con Escape
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && viewer.classList.contains("active")) {
-        this.hide()
-      }
-    })
 
     // Cerrar al hacer click fuera del contenido
     viewer.addEventListener("click", (e) => {
@@ -75,6 +75,15 @@ class PostViewer extends HTMLElement {
         this.hide()
       }
     })
+
+    // Listener global - guardar referencia para limpieza
+    this.handleKeydown = (e) => {
+      if (e.key === "Escape" && viewer.classList.contains("active")) {
+        this.hide()
+      }
+    }
+
+    document.addEventListener("keydown", this.handleKeydown)
   }
 
   showPost(post, updateHistory = true) {
@@ -132,10 +141,24 @@ class PostViewer extends HTMLElement {
     viewer.classList.remove("active")
     document.body.style.overflow = ""
 
+    // Enviar evento
+    trackEvents({
+      event_type: "post_view",
+      event_data: this.currentPost.slug,
+      new_value: "closed",
+    })
+
     // Actualizar URL
     const newUrl = window.location.pathname
     history.pushState({}, "", newUrl)
     this.currentPost = null
+  }
+
+  disconnectedCallback() {
+    // Limpiar solo los listeners globales
+    document.removeEventListener("post-selected", this.handlePostSelected)
+    window.removeEventListener("popstate", this.handlePopState)
+    document.removeEventListener("keydown", this.handleKeydown)
   }
 }
 

@@ -1,3 +1,5 @@
+import { trackEvents } from "../modules/track.js"
+
 class PostList extends HTMLElement {
   constructor() {
     super()
@@ -59,6 +61,12 @@ class PostList extends HTMLElement {
               bubbles: true,
             }),
           )
+
+          trackEvents({
+            event_type: "post_view",
+            event_data: post.slug,
+            new_value: "opened",
+          })
         }
       })
     })

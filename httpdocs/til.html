@@ -40,7 +40,7 @@
         <nav>
             <div class="nav-left">
                 <a href="/" class="nav-button">← Inicio</a>
-                <a href="/CV.pdf" class="nav-button" download="Alejandro_de_Cora_CV.pdf">CV</a>
+                <a id="cv" href="/cv" class="nav-button">CV</a>
             </div>
             <div>
                 <x-theme></x-theme>
@@ -50,6 +50,21 @@
             <header class="blog-header">
                 <h1>Today I Learned</h1>
                 <p>Apuntes, reflexiones y cosas que voy aprendiendo</p>
+                <!-- Estoy escondido, deselecciona "display: none;"-->
+                <p data-hide-i18n>
+                    Gracias por leer mi currículum y llegar hasta aquí. Puedes
+                    <a
+                        href="mailto:alejandrodecora@gmail.com?subject=Bom currículum&body=¡Contratado! Comezas a primeiros do vindeiro mes."
+                        >contactarme 📬</a
+                    >
+                    , te espero 😚.
+                    <img
+                        src="images/esperando.webp"
+                        alt="Esperando tranquilamente no parque"
+                        width="100"
+                        height="200"
+                    />
+                </p>
             </header>
             <post-list></post-list>
             <post-viewer></post-viewer>

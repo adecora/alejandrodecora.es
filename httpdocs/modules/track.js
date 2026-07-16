@@ -35,6 +35,7 @@ async function trackData() {
   const timestamp = new FancyDate()
   const data = {
     name: name ?? "unknown",
+    path: location.pathname ?? "unknown",
     language: navigator.language ?? "unknown",
     useragent: navigator.userAgent ?? "unknown",
     theme: theme ?? "light-mode",
@@ -86,7 +87,7 @@ async function trackLoad() {
     },
     body: JSON.stringify(
       { timestamp: timestamp.toTelegram(), ...data },
-      ["timestamp", "useragent", "name", "usergent", "city"],
+      ["timestamp", "useragent", "ip", "path", "name", "useragent", "city"],
       "\t",
     ),
   }).catch((error) => {

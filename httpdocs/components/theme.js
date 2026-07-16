@@ -85,10 +85,6 @@ class Theme extends HTMLElement {
       }
     })
   }
-
-  disconnectedCallback() {
-    this.input.removeEventListener("change")
-  }
 }
 
 export { Theme }
